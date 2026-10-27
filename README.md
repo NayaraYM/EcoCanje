@@ -68,7 +68,42 @@ git push -u origin main
 - `src/lib/constants.js`: **datos de contacto del footer** (correo y WhatsApp están de ejemplo), horarios y guía de separación.
 - `supabase/schema.sql` (sección final) o tablas `materials` / `rewards` desde el *Table Editor*: puntos por kg, factores de CO₂ y catálogo.
   Los factores de CO₂ son **referenciales**: cita la fuente que uses en tu informe.
-- Equivalencia usada: 1 EcoPunto ≈ S/ 0.05 de producto.
+- Equivalencia usada: **1 EcoPunto = S/ 0.10** (ver la sección «Economía de puntos»).
+
+## Economía de puntos (precios reales)
+Regla: **1 EcoPunto = S/ 0.10**. Los puntos por kg salen de lo que paga la recicladora, y el valor de cada premio, del precio de venta.
+
+| Material | Recicladora paga | Puntos por kg | Origen del dato |
+|---|---|---|---|
+| Plásticos valorizables | S/ 1.00/kg | 10 | Dato real |
+| Cartón limpio | S/ 0.20/kg | 2 | Dato real |
+| Botellas PET | S/ 1.50/kg | 15 | **Estimado**, confirmar |
+| Latas | S/ 3.00/kg | 30 | **Estimado** (aluminio), confirmar |
+| Restos de frutas y verduras | sin precio | 0.5 | Apoyo simbólico, lo cubre un auspicio o el valor del compost |
+
+| Premio | Valor | EcoPuntos |
+|---|---|---|
+| 👜 Bolsa reutilizable de tela | S/ 1.00 | 10 |
+| 🗑️ Bolsas para residuos (10 un.) | S/ 1.40 | 15 |
+| 🧴 Lejía 636 ml | S/ 2.00 | 20 |
+| 🧼 Jabón de lavar (1 barra) | S/ 2.30 | 25 |
+| 🫧 Detergente 500 g | S/ 2.70 | 30 |
+| 🌱 Bolsas biodegradables (20 un.) | S/ 4.00 | 40 |
+| 🪴 Plantita ornamental | S/ 4.00 | 40 |
+| 🧻 Papel higiénico (4 rollos) | S/ 4.30 | 45 |
+| 🧽 Esponjas de cocina (3 un.) | S/ 6.00 | 60 |
+| 🧤 Guantes de limpieza | S/ 10.00 | 100 |
+| 🧹 Kit de limpieza (lejía + detergente + jabón + esponjas) | S/ 13.00 | 130 |
+
+Ejemplo: 5 kg de PET = 75 puntos = una lejía y un jabón. 10 kg de cartón = 20 puntos = una lejía.
+El sistema devuelve en puntos el valor de lo que paga la recicladora, así que se sostiene si compran los premios al por mayor (más barato que el precio de venta).
+
+### Ya ejecuté el schema.sql antes: cómo aplicar los nuevos valores
+Supabase → SQL Editor → pega `supabase/actualizar_precios_y_puntos.sql` → Run. No borra usuarios, entregas ni canjes; las entregas antiguas conservan sus puntos. Se puede ejecutar más de una vez.
+
+## Imágenes
+Las ilustraciones (tachos, puesto de mercado, iconos de pasos, guía, horarios y árboles) son SVG propios en `src/components/Art.jsx`.
+Para mostrar una **foto real del Mercado Modelo** en el inicio, guarda la imagen como `public/img/mercado-modelo.jpg` (carpeta nueva `img` dentro de `public`). Si no existe, esa sección se oculta sola.
 
 ## Estructura
 ```

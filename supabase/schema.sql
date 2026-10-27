@@ -36,6 +36,7 @@ create table if not exists public.rewards (
   name text not null,
   description text,
   points int not null check (points > 0),
+  price numeric,
   stock int not null default 0 check (stock >= 0),
   emoji text default '🎁',
   active boolean not null default true
@@ -212,24 +213,29 @@ begin
 end $$;
 
 -- ---------- Datos iniciales ----------
--- Los factores de CO2 son referenciales: reemplázalos por la fuente que cite tu equipo.
+-- Regla de la economía de puntos: 1 EcoPunto = S/ 0.10.
+-- Los puntos por kg salen del precio al que paga la recicladora:
+--   plásticos valorizables S/ 1.00/kg (dato real) · cartón S/ 0.20/kg (dato real)
+--   PET S/ 1.50/kg y latas S/ 3.00/kg (ESTIMADOS: confirmar con la recicladora)
+--   restos orgánicos: 0.5 punto/kg, apoyo simbólico (no tienen precio de mercado)
+-- Los factores de CO2 son referenciales: cita la fuente que uses en tu informe.
 insert into public.materials (name, kind, points_per_kg, co2_per_kg) values
-  ('Restos de frutas y verduras', 'organico',   3, 0.5),
-  ('Cartón limpio',               'reciclable', 8, 0.9),
-  ('Botellas PET',                'reciclable', 15, 1.5),
-  ('Plásticos valorizables',      'reciclable', 10, 1.2),
-  ('Latas',                       'reciclable', 25, 8.0);
+  ('Restos de frutas y verduras', 'organico',   0.5, 0.5),
+  ('Cartón limpio',               'reciclable', 2,   0.9),
+  ('Botellas PET',                'reciclable', 15,  1.5),
+  ('Plásticos valorizables',      'reciclable', 10,  1.2),
+  ('Latas',                       'reciclable', 30,  8.0);
 
--- Equivalencia de referencia: 1 EcoPunto ≈ S/ 0.05 de producto
-insert into public.rewards (name, description, points, stock, emoji) values
-  ('Bolsas para residuos (10 un.)', 'Bolsas resistentes para tu puesto', 60, 60, '🗑️'),
-  ('Esponjas de cocina (3 un.)',    'Para limpiar mesas y utensilios', 60, 60, '🧽'),
-  ('Lejía 1 L',                     'Desinfección de puestos y pisos', 80, 50, '🧴'),
-  ('Jabón de lavar (2 barras)',     'Jabón en barra multiuso', 70, 50, '🧼'),
-  ('Papel higiénico (4 rollos)',    'Para el hogar o el puesto', 100, 40, '🧻'),
-  ('Guantes de limpieza',           'Guantes de látex reforzados', 100, 40, '🧤'),
-  ('Bolsa reutilizable de tela',    'Para tus compras en el mercado', 100, 40, '👜'),
-  ('Plantón ornamental',            'Una planta pequeña para tu puesto o tu casa', 100, 30, '🪴'),
-  ('Detergente 500 g',              'Detergente en polvo', 120, 40, '🫧'),
-  ('Bolsas biodegradables (20 un.)','Para residuos orgánicos', 120, 40, '🌱'),
-  ('Kit de limpieza',               'Lejía, detergente y 2 esponjas', 250, 20, '🧹');
+-- Premios con precios reales de mercado (price = valor referencial en soles)
+insert into public.rewards (name, description, points, price, stock, emoji) values
+  ('Bolsa reutilizable de tela',     'Para tus compras en el mercado', 10, 1.00, 30, '👜'),
+  ('Bolsas para residuos (10 un.)',  'Bolsas resistentes para tu puesto', 15, 1.40, 30, '🗑️'),
+  ('Lejía 636 ml',                   'Desinfección de puestos y pisos', 20, 2.00, 20, '🧴'),
+  ('Jabón de lavar (1 barra)',       'Jabón en barra multiuso', 25, 2.30, 20, '🧼'),
+  ('Detergente 500 g',               'Detergente en polvo', 30, 2.70, 20, '🫧'),
+  ('Bolsas biodegradables (20 un.)', 'Para residuos orgánicos', 40, 4.00, 15, '🌱'),
+  ('Plantita ornamental',            'Una planta pequeña para tu puesto o tu casa', 40, 4.00, 10, '🪴'),
+  ('Papel higiénico (4 rollos)',     'Para el hogar o el puesto', 45, 4.30, 15, '🧻'),
+  ('Esponjas de cocina (3 un.)',     'Para limpiar mesas y utensilios', 60, 6.00, 10, '🧽'),
+  ('Guantes de limpieza',            'Guantes resistentes para limpiar', 100, 10.00, 5, '🧤'),
+  ('Kit de limpieza',                'Lejía, detergente, jabón y esponjas (3 un.)', 130, 13.00, 5, '🧹');

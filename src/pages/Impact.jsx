@@ -1,5 +1,6 @@
 import { useWallet } from '../context/WalletContext.jsx'
 import { KG_PER_TREE_CO2, fmtDate, num } from '../lib/constants.js'
+import { Icon } from '../components/Art.jsx'
 
 export default function Impact() {
   const { deposits, family } = useWallet()
@@ -12,6 +13,7 @@ export default function Impact() {
   })
   const rows = Object.entries(byMat).sort((a, b) => b[1] - a[1])
   const max = rows[0]?.[1] || 1
+  const trees = Math.min(12, Math.round(co2 / KG_PER_TREE_CO2))
 
   return (
     <section className="wrap pad">
@@ -23,6 +25,13 @@ export default function Impact() {
         <div className="stat"><small>Residuos recuperados</small><b>{num(kg)} kg</b></div>
         <div className="stat"><small>Equivale a árboles al año</small><b>{num(co2 / KG_PER_TREE_CO2)}</b></div>
       </div>
+
+      {trees > 0 && (
+        <div className="card forest" aria-label={`Equivale a ${trees} árboles`}>
+          {Array.from({ length: trees }, (_, i) => <Icon key={i} name="arbol" size={44} />)}
+          <p>Tu aporte equivale a unos {num(co2 / KG_PER_TREE_CO2)} árboles trabajando durante un año.</p>
+        </div>
+      )}
 
       <div className="card">
         <h2>Residuos por tipo</h2>

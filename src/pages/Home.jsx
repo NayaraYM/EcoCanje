@@ -2,17 +2,19 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useWallet } from '../context/WalletContext.jsx'
-import { STEPS, ROLES, num } from '../lib/constants.js'
+import { STEPS, ROLES, num, soles } from '../lib/constants.js'
+import { Bins, Stall, Icon } from '../components/Art.jsx'
 
 // Boleta de pesaje: simula cuántos EcoPuntos da una entrega con los valores reales del catálogo
 function Balanza() {
   const { materials, rewards } = useWallet()
   const [mid, setMid] = useState(null)
   const [kg, setKg] = useState(6)
-  const m = materials.find((x) => x.id === mid) || materials[0]
+  const m = materials.find((x) => x.id === mid) || materials.find((x) => /PET/i.test(x.name)) || materials[0]
   if (!m) return <div className="ticket"><p>Cargando balanza…</p></div>
   const pts = Math.round(kg * m.points_per_kg)
   const co2 = kg * m.co2_per_kg
+  const valor = pts * 0.1
   const best = [...rewards].filter((r) => r.points <= pts).sort((a, b) => b.points - a.points)[0]
   const next = [...rewards].filter((r) => r.points > pts).sort((a, b) => a.points - b.points)[0]
   return (
@@ -28,7 +30,7 @@ function Balanza() {
       </label>
       <div className="ticket-total">
         <span className="big">{pts}</span>
-        <span>EcoPuntos<br /><small>{num(co2)} kg de CO₂ evitados (estimado)</small></span>
+        <span>EcoPuntos<br /><small>Valen unos {soles(valor)} en productos</small><br /><small>{num(co2)} kg de CO₂ evitados (estimado)</small></span>
       </div>
       <p className="ticket-note">
         {best ? <>Con esta entrega ya alcanzas {best.emoji} <b>{best.name}</b>.</> : next ? <>Te faltan {next.points - pts} puntos para {next.emoji} {next.name}.</> : null}
@@ -60,6 +62,7 @@ export default function Home() {
                 </>
               )}
             </div>
+            <Stall className="hero-art" />
           </div>
           <Balanza />
         </div>
@@ -69,8 +72,11 @@ export default function Home() {
         <h2>Cómo funciona</h2>
         <p className="sub">Los residuos dejan de ser solo desecho y se convierten en recursos dentro de un sistema circular.</p>
         <ol className="steps">
-          {STEPS.map(([t, d], i) => (
-            <li key={t}><span className="step-n">{i + 1}</span><h3>{t}</h3><p>{d}</p></li>
+          {STEPS.map(([t, ic, d], i) => (
+            <li key={t}>
+              <div className="step-ico"><Icon name={ic} size={44} /><span className="step-n">{i + 1}</span></div>
+              <h3>{t}</h3><p>{d}</p>
+            </li>
           ))}
         </ol>
       </section>
@@ -78,6 +84,7 @@ export default function Home() {
       <section className="band">
         <div className="wrap two">
           <div>
+            <Bins className="band-art" />
             <h2>Qué recibimos</h2>
             <h3>Orgánicos aprovechables</h3>
             <ul className="plain"><li>Restos de frutas</li><li>Restos de verduras</li><li>Otros residuos vegetales aceptados</li></ul>
@@ -97,6 +104,11 @@ export default function Home() {
                 }[r]}</p>
               </div>
             ))}
+            <figure className="photo">
+              <img src="/img/mercado-modelo.jpg" alt="Fachada del Mercado Modelo de Huancayo" loading="lazy"
+                   onError={(e) => { e.currentTarget.closest('figure').style.display = 'none' }} />
+              <figcaption>Mercado Modelo de Huancayo</figcaption>
+            </figure>
           </div>
         </div>
       </section>
@@ -111,6 +123,7 @@ export default function Home() {
               <h3>{r.name}</h3>
               <p>{r.description}</p>
               <b className="pts">{r.points} EcoPuntos</b>
+              {r.price != null && <small>Valor referencial {soles(r.price)}</small>}
             </article>
           ))}
         </div>

@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase.js'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useWallet } from '../context/WalletContext.jsx'
 import PrizeAlert from '../components/PrizeAlert.jsx'
-import { fmtDate } from '../lib/constants.js'
+import { fmtDate, soles } from '../lib/constants.js'
 
 export default function Rewards() {
   const { profile } = useAuth()
@@ -46,6 +46,7 @@ export default function Rewards() {
               <h3>{r.name}</h3>
               <p>{r.description}</p>
               <b className="pts">{r.points} EcoPuntos</b>
+              {r.price != null && <small>Valor referencial {soles(r.price)}</small>}
               <small>{r.stock > 0 ? `Quedan ${r.stock}` : 'Agotado'}</small>
               {!profile && <Link className="btn sm ghost" to="/acceso">Ingresa para canjear</Link>}
               {isSocio && (

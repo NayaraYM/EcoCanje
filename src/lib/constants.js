@@ -31,36 +31,41 @@ export const ROLES = {
 }
 
 export const STEPS = [
-  ['Separa', 'Aparta tus residuos aprovechables mientras trabajas: orgánicos por un lado, reciclables por otro.'],
-  ['Entrega', 'Llévalos al punto EcoCanje con tu código de socio.'],
-  ['Acumula', 'Se pesan y se te asignan EcoPuntos según el tipo y la cantidad.'],
-  ['Canjea', 'Cambia tus puntos por productos de limpieza y de uso diario.'],
-  ['Valoriza', 'Tus residuos entran a cadenas de aprovechamiento: reciclaje y compost.'],
+  ['Separa', 'separa', 'Aparta tus residuos aprovechables mientras trabajas: orgánicos por un lado, reciclables por otro.'],
+  ['Entrega', 'entrega', 'Llévalos al punto EcoCanje con tu código de socio.'],
+  ['Acumula', 'acumula', 'Se pesan y se te asignan EcoPuntos según el tipo y la cantidad.'],
+  ['Canjea', 'canjea', 'Cambia tus puntos por productos de limpieza y de uso diario.'],
+  ['Valoriza', 'valoriza', 'Tus residuos entran a cadenas de aprovechamiento: reciclaje y compost.'],
 ]
 
 export const GUIDE = [
   {
     title: 'Residuos orgánicos',
+    icon: 'organico',
     yes: ['Cáscaras y restos de frutas', 'Hojas y restos de verduras', 'Frutas y verduras que ya no se pueden vender'],
     no: ['Carne, huesos y comida cocida', 'Aceites y grasas', 'Bolsas plásticas mezcladas con los restos'],
   },
   {
     title: 'Cartón',
+    icon: 'carton',
     yes: ['Cajas limpias y secas', 'Aplastadas y atadas para ocupar menos espacio'],
     no: ['Cartón mojado o con grasa', 'Cartón con restos de comida'],
   },
   {
     title: 'Botellas PET',
+    icon: 'pet',
     yes: ['Botellas de bebidas vacías', 'Enjuagadas y aplastadas'],
     no: ['Envases con líquido o restos adentro'],
   },
   {
     title: 'Latas',
+    icon: 'latas',
     yes: ['Latas de bebidas y de conservas, vacías', 'Enjuagadas'],
     no: ['Latas de aerosol', 'Latas muy oxidadas'],
   },
   {
     title: 'Plásticos valorizables',
+    icon: 'plasticos',
     yes: ['Bolsas y envases limpios y secos', 'Baldes y bidones plásticos'],
     no: ['Plásticos con grasa o restos', 'Tecnopor'],
   },
@@ -77,18 +82,21 @@ export const TIPS = [
 export const SCHEDULE = [
   {
     title: 'Recepción de residuos en el punto EcoCanje',
+    icon: 'acumula',
     days: 'Lunes a sábado',
     hours: '6:30 a. m. a 9:00 a. m. y 3:00 p. m. a 5:00 p. m.',
     note: 'Lleva tus residuos ya separados y tu código de socio.',
   },
   {
     title: 'Entrega de premios',
+    icon: 'canjea',
     days: 'Viernes',
     hours: '4:00 p. m. a 6:00 p. m.',
     note: 'Muestra tu código de socio para recoger tu canje.',
   },
   {
     title: 'Recojo de materiales por recicladores aliados',
+    icon: 'camion',
     days: 'Martes, jueves y sábado',
     hours: '11:00 a. m.',
     note: 'Los materiales acumulados salen hacia las cadenas de reciclaje.',
@@ -102,3 +110,5 @@ export const fmtDate = (d) =>
 
 export const num = (n, d = 1) =>
   Number(n || 0).toLocaleString('es-PE', { maximumFractionDigits: d })
+
+export const soles = (n) => `S/ ${Number(n).toFixed(2)}`

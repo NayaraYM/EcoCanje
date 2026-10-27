@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase.js'
 import { useAuth } from '../context/AuthContext.jsx'
 import { ROLES } from '../lib/constants.js'
+import { Bins } from '../components/Art.jsx'
 
 const errorEs = (m = '') => {
   if (m.includes('Invalid login')) return 'Correo o contraseña incorrectos.'
@@ -51,7 +52,13 @@ export default function Auth() {
 
   const r = ROLES[f.role]
   return (
-    <section className="wrap pad narrow">
+    <section className="wrap pad auth">
+      <aside className="auth-art">
+        <h2>Separa, suma y canjea</h2>
+        <p>Tus residuos del mercado se convierten en EcoPuntos para llevarte lejía, detergente, bolsas y más.</p>
+        <Bins />
+      </aside>
+      <div>
       <div className="tabs" role="tablist">
         <button role="tab" aria-selected={mode === 'login'} className={mode === 'login' ? 'on' : ''} onClick={() => setMode('login')}>Ingresar</button>
         <button role="tab" aria-selected={mode === 'registro'} className={mode === 'registro' ? 'on' : ''} onClick={() => setMode('registro')}>Crear cuenta</button>
@@ -96,6 +103,7 @@ export default function Auth() {
         {msg && <p className={`msg ${msg.type}`} role="alert">{msg.text}</p>}
         <button className="btn" disabled={busy}>{busy ? 'Un momento…' : mode === 'login' ? 'Ingresar' : 'Crear cuenta'}</button>
       </form>
+      </div>
     </section>
   )
 }

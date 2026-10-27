@@ -1,4 +1,5 @@
 import { GUIDE, TIPS } from '../lib/constants.js'
+import { Icon } from '../components/Art.jsx'
 
 export default function Guide() {
   return (
@@ -8,7 +9,7 @@ export default function Guide() {
       <div className="grid">
         {GUIDE.map((g) => (
           <article className="card" key={g.title}>
-            <h2>{g.title}</h2>
+            <div className="card-head"><span className="ico-bubble"><Icon name={g.icon} size={40} /></span><h2>{g.title}</h2></div>
             <h3 className="ok">Sí recibimos</h3>
             <ul className="plain">{g.yes.map((x) => <li key={x}>{x}</li>)}</ul>
             <h3 className="bad">No recibimos</h3>

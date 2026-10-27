@@ -1,4 +1,5 @@
 import { SCHEDULE, CONTACT } from '../lib/constants.js'
+import { Icon } from '../components/Art.jsx'
 
 export default function Schedule() {
   return (
@@ -8,6 +9,7 @@ export default function Schedule() {
       <div className="grid">
         {SCHEDULE.map((s) => (
           <article className="card" key={s.title}>
+            <span className="ico-bubble big"><Icon name={s.icon} size={52} /></span>
             <h2>{s.title}</h2>
             <p><b>{s.days}</b></p>
             <p>{s.hours}</p>
